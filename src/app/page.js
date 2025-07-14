@@ -1,11 +1,16 @@
-import Image from "next/image";
+import Book from "./components/books/book";
 
-export default function Home() {
+export default async function Home() {
+  const data = await fetch("http://localhost:3000/api/books");
+  const books = await data.json();
+
   return (
-    <div className="">
-      <div>Home</div>
-        <h1>home</h1>
-        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Obcaecati accusamus aut eos nihil, eveniet eaque cum laudantium earum tempora possimus.</p>
+    <div className="mt-6 mx-8">
+      <div className="grid grid-cols-1 gap-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-8">
+        {books.map((book) => (
+          <Book key={book._id} info={book} />
+        ))}
       </div>
+    </div>
   );
 }
