@@ -12,6 +12,7 @@ import { useState } from "react";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [onFocus, setOnFocus] = useState(false);
   const pathName = usePathname();
 
   return (
@@ -56,6 +57,8 @@ export default function Navbar() {
                 id=""
                 placeholder="Search book..."
                 className="w-5/6 border-1 border-gray-300 rounded-sm focus:outline-green-600 focus:outline py-0.5 px-6"
+                onFocus={() => setOnFocus(true)}
+                onBlur={() => setOnFocus(false)}
               />
             </div>
 
@@ -65,7 +68,9 @@ export default function Navbar() {
                 <Link
                   href="/"
                   className={`hover:text-green-600 underline-offset-8 decoration-4 decoration-green-400 ${
-                    pathName === "/" ? "text-green-600 underline" : ""
+                    pathName === "/" && !onFocus
+                      ? "text-green-600 underline"
+                      : ""
                   }`}
                 >
                   Home
@@ -185,6 +190,9 @@ export default function Navbar() {
             </div>
           </div>
         </div>
+
+        {/* search result */}
+        {/* <div className="absolute left-3/12 top-10/12 w-3/12 min-h-32 max-h-72 overflow-y-auto bg-amber-100 rounded"></div> */}
       </nav>
     </>
   );
