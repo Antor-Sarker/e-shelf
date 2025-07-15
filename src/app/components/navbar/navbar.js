@@ -1,4 +1,5 @@
 "use client";
+import { searchBooks } from "@/app/actions/searchBooks";
 import {
   Bars3Icon,
   MagnifyingGlassIcon,
@@ -6,14 +7,38 @@ import {
   UserIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpenMenu, setIsOpenMenu] = useState(false);
+
   const [onFocus, setOnFocus] = useState(false);
+  const [input, setInput] = useState("");
+  const [debounceInput, setDebounceInput] = useState("");
+  const [searchResult, setSearchResult] = useState([]);
+
   const pathName = usePathname();
+
+  //debouncing for search books
+  useEffect(() => {
+    const timeOutId = setTimeout(() => {
+      setDebounceInput(input);
+    }, 500);
+
+    return () => clearTimeout(timeOutId);
+  }, [input]);
+
+  //search books
+  useEffect(() => {
+    if (!debounceInput.trim()) return;
+    (async function () {
+      const result = await searchBooks(debounceInput);
+      setSearchResult(result);
+    })();
+  }, [debounceInput]);
 
   return (
     <>
@@ -26,15 +51,15 @@ export default function Navbar() {
                 "visible sm:visible md:hidden lg:hidden xl:hidden 2xl:hidden cursor-pointer"
               }
             >
-              {isOpen ? (
+              {isOpenMenu ? (
                 <XMarkIcon
                   className="text-black size-6"
-                  onClick={() => setIsOpen(!isOpen)}
+                  onClick={() => setIsOpenMenu(!isOpenMenu)}
                 />
               ) : (
                 <Bars3Icon
                   className="text-black size-6"
-                  onClick={() => setIsOpen(!isOpen)}
+                  onClick={() => setIsOpenMenu(!isOpenMenu)}
                 />
               )}
             </div>
@@ -53,12 +78,13 @@ export default function Navbar() {
               <MagnifyingGlassIcon className="absolute top-1 left-0.5 text-gray-400 size-5" />
               <input
                 type="text"
-                name=""
-                id=""
+                name="search"
+                value={input}
                 placeholder="Search book..."
                 className="w-5/6 border-1 border-gray-300 rounded-sm focus:outline-green-600 focus:outline py-0.5 px-6"
                 onFocus={() => setOnFocus(true)}
                 onBlur={() => setOnFocus(false)}
+                onChange={(e) => setInput(e.target.value)}
               />
             </div>
 
@@ -130,7 +156,7 @@ export default function Navbar() {
         {/* when small screen */}
         <div
           className={`w-full px-4 absolute top-14 py-10 ${
-            isOpen ? "visible" : "hidden"
+            isOpenMenu ? "visible" : "hidden"
           } sm:visible md:hidden lg:hidden xl:hidden 2xl:hidden bg-white`}
         >
           <div className="relative">
@@ -141,10 +167,16 @@ export default function Navbar() {
               id=""
               placeholder="Search book..."
               className="w-6/6 border-1 border-gray-300 focus:border-green-400 rounded-sm focus:outline-green-600 focus:outline py-0.5 px-8 text-gray-800"
+              onFocus={() => setOnFocus(true)}
+              onBlur={() => setOnFocus(false)}
+              onChange={(e) => setInput(e.target.value)}
             />
           </div>
 
-          <div className="mt-4 text-gray-700" onClick={() => setIsOpen(false)}>
+          <div
+            className="mt-4 text-gray-700"
+            onClick={() => setIsOpenMenu(false)}
+          >
             <div
               className={`${
                 pathName === "/" ? "bg-green-400 text-emerald-50" : ""
@@ -192,7 +224,48 @@ export default function Navbar() {
         </div>
 
         {/* search result */}
-        {/* <div className="absolute left-3/12 top-10/12 w-3/12 min-h-32 max-h-72 overflow-y-auto bg-amber-100 rounded"></div> */}
+        {input && (
+          <div className="absolute left-0 md:left-1/12 lg:left-1/10 xl:left-2/9 2xl:left-2/9 top-32 sm:top-32 md:top-10/12 lg:top-10/12 xl:top-10/12 w-full sm:w-full md:w-4/12 lg:3/12 xl:w-3/12 min-h-32 max-h-96 sm:max-h-96 md:max-h-96 lg:max-h-80 xl:max-h-96 2xl:max-h-96 overflow-y-auto rounded bg-gray-50 p-3 shadow text-sm">
+            <div className="flex justify-between">
+              <div
+                className={`${
+                  searchResult?.length > 0
+                    ? "text-green-700"
+                    : "text-red-700 font-medium"
+                } pb-3`}
+              >
+                {searchResult?.length > 0 ? searchResult?.length : "No"} books
+                found
+              </div>
+              <XMarkIcon
+                className="h-6 w-6 cursor-pointer"
+                onClick={() => setInput("")}
+              />
+            </div>
+            {searchResult?.map((book) => {
+              return (
+                <div
+                  key={book._id}
+                  className="flex border border-gray-300 rounded p-1 mb-2 cursor-pointer"
+                >
+                  <div className="mr-2 w-1/6">
+                    <Image
+                      src={book.cover}
+                      alt="cover"
+                      width={250}
+                      height={300}
+                      className="h-auto"
+                    />
+                  </div>
+                  <div className="my-3">
+                    <p className="text-blue-950">{book?.title}</p>
+                    <p className="text-amber-950">{book?.author}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </nav>
     </>
   );
