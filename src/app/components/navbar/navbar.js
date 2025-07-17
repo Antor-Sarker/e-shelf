@@ -16,7 +16,7 @@ export default function Navbar() {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
 
   const [onFocus, setOnFocus] = useState(false);
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState('');
   const [debounceInput, setDebounceInput] = useState("");
   const [searchResult, setSearchResult] = useState([]);
 
@@ -163,8 +163,8 @@ export default function Navbar() {
             <MagnifyingGlassIcon className="absolute top-1 left-1 text-gray-400 size-5" />
             <input
               type="text"
-              name=""
-              id=""
+              name="search"
+              value={input}
               placeholder="Search book..."
               className="w-6/6 border-1 border-gray-300 focus:border-green-400 rounded-sm focus:outline-green-600 focus:outline py-0.5 px-8 text-gray-800"
               onFocus={() => setOnFocus(true)}
