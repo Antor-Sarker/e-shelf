@@ -1,8 +1,12 @@
 "use server";
 
+import dynamic from "next/dynamic";
+
 export async function searchBooks(param) {
   try {
-    const res = await fetch(`http://localhost:3000/api/books?title=${param}`);
+    const res = await fetch(`http://localhost:3000/api/books?title=${param}`,{
+      cache: "no-store"
+    });
     if (!res.ok) {
       const err = await res.text();
       console.error("API error:", err);
