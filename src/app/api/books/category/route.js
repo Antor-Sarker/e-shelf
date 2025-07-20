@@ -1,5 +1,4 @@
-import clientPromise from "../../../../../lib/mongodb";
-
+import clientPromise from "../../../../../lib/mongodb.js";
 export async function GET(request) {
   try {
     const client = await clientPromise;

@@ -110,7 +110,7 @@ export default function Navbar() {
                     pathName === "/category" ? "text-green-600 underline" : ""
                   }`}
                 >
-                  Category
+                  Categories
                 </Link>
               </div>
 
@@ -121,7 +121,7 @@ export default function Navbar() {
                     pathName === "/author" ? "text-green-600 underline" : ""
                   }`}
                 >
-                  Author
+                  Authors
                 </Link>
               </div>
 
@@ -193,7 +193,7 @@ export default function Navbar() {
               } text-bold rounded my-2 px-1`}
             >
               <Link href="/category" className="">
-                Category
+                Categories
               </Link>
             </div>
 
@@ -205,7 +205,7 @@ export default function Navbar() {
               } text-bold  rounded my-2 px-1`}
             >
               <Link href="/author" className="">
-                Author
+                Authors
               </Link>
             </div>
 

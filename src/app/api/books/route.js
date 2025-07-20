@@ -1,5 +1,4 @@
 import clientPromise from "../../../../lib/mongodb";
-
 export async function GET(request) {
   try {
     const searchParams = await request.nextUrl.searchParams;
