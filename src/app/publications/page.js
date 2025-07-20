@@ -14,7 +14,7 @@ export default async function Publications() {
   return (
     <div className="">
       <h1 className="text-xl p-3 text-green-700"># All Publications</h1>
-      <Filter data={data} page={"publication"} />
+      <Filter data={data} page={"publications"} />
     </div>
   );
 }

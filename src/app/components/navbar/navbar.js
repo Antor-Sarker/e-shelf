@@ -107,7 +107,7 @@ export default function Navbar() {
                 <Link
                   href="/category"
                   className={`hover:text-green-600 underline-offset-8 decoration-4 decoration-green-400 ${
-                    pathName === "/category" ? "text-green-600 underline" : ""
+                    pathName.split('/')[1] === "category" ? "text-green-600 underline" : ""
                   }`}
                 >
                   Categories
@@ -118,7 +118,7 @@ export default function Navbar() {
                 <Link
                   href="/author"
                   className={`hover:text-green-600 underline-offset-8 decoration-4 decoration-green-400 ${
-                    pathName === "/author" ? "text-green-600 underline" : ""
+                    pathName.split('/')[1] === "author" ? "text-green-600 underline" : ""
                   }`}
                 >
                   Authors
@@ -129,7 +129,7 @@ export default function Navbar() {
                 <Link
                   href="/publications"
                   className={`hover:text-green-600 underline-offset-8 decoration-4 decoration-green-400 ${
-                    pathName === "/publications"
+                    pathName.split('/')[1] === "publications"
                       ? "text-green-600 underline"
                       : ""
                   }`}
@@ -187,7 +187,7 @@ export default function Navbar() {
 
             <div
               className={`${
-                pathName === "/category"
+                pathName.split('/')[1] === "category"
                   ? "bg-green-400 text-emerald-50"
                   : "not-only-of-type:"
               } text-bold rounded my-2 px-1`}
@@ -199,7 +199,7 @@ export default function Navbar() {
 
             <div
               className={`${
-                pathName === "/author"
+                pathName.split('/')[1] === "author"
                   ? "bg-green-400 text-emerald-50"
                   : "not-only-of-type:"
               } text-bold  rounded my-2 px-1`}
@@ -211,7 +211,7 @@ export default function Navbar() {
 
             <div
               className={`${
-                pathName === "/publications"
+                pathName.split('/')[1] === "publications"
                   ? "bg-green-400 text-emerald-50"
                   : "not-only-of-type:"
               } text-bold  rounded my-2 px-1`}
