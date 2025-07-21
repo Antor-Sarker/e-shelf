@@ -1,13 +1,14 @@
 import Book from "./components/books/book";
 export const dynamic = "force-dynamic";
 export default async function Home() {
-  const res = await fetch("http://localhost:3000/api/books");
+  const res = await fetch("http://localhost:3000/api/books?page=1");
   if (!res.ok) {
     const err = await res.text();
     console.error("API error:", err);
     return;
   }
-  const books = await res.json();
+  const {total, books } = await res.json();
+
 
   return (
     <div className="mt-6 mx-8">
