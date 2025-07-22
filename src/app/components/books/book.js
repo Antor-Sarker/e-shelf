@@ -1,36 +1,29 @@
-import { ShoppingCartIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 
 export default function Book({ info }) {
   const { _id, title, cover, price, author, inStock } = info;
 
   return (
-    <div className="rounded-sm p-0 m-3 bg-[#edf7f1] shawow shadow-black shadow-md">
-      <div className="relative">
-        <div className="overflow-hidden">
-          <Image
-            className="rounded-sm cursor-pointer transition-transform duration-300 hover:scale-105"
-            src={cover}
-            alt="cover"
-            width={285}
-            height={50}
-          />
-        </div>
-        <div className="absolute top-0 bg-[#16a34a] text-gray-100 px-2 rounded-br-sm">
-          in stock
-        </div>
+    <div className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col transform transition duration-300 hover:scale-105 w-full">
+      <div className="relative w-96 sm:w-full lg:w-full xl:w-full 2xl:w-full h-72">
+        <Image
+          src={cover}
+          alt={title}
+          layout="fill"
+          objectFit="cover"
+          className="border-b border-gray-200"
+        />
       </div>
-      <div className="w-full h-32 relative">
-        <h2 className="text-emerald-900 text-xl font-light px-2">{title}</h2>
-        <div className="absolute bottom-7">
-          <h3 className=" text-sm text-blue-950 px-3">by {author}</h3>
-          <h3 className="text-base text-[#05966e] font-bold text-center">
-            ৳{price} Tk
-          </h3>
+
+      <div className="p-4 flex flex-col flex-grow text-center">
+        <h3 className="text-sm font-semibold text-emerald-900 mb-2">{title}</h3>
+        <h4 className="text-sm text-blue-950">by {author}</h4>
+
+        <div>
+          <p className="text-sm font-bold text-[#05966e] mb-4">৳ {price}</p>
         </div>
 
-        <button className="flex justify-center text-center gap-2 py-0.5 cursor-pointer w-full text-white rounded-sm bg-[#059669] hover:bg-[#225f4c] hover:bold absolute bottom-0">
-          <ShoppingCartIcon className="size-5" />
+        <button className="mt-auto bg-[#059669] text-white py-1 px-4 rounded-md hover:bg-[#2e6554] transition duration-200 cursor-pointer">
           Add to Cart
         </button>
       </div>

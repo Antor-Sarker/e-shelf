@@ -11,7 +11,7 @@ export default async function Books({ params }) {
         # {decodeURIComponent(name)}:{" "}
         <span className="text-green-600"> {books.length} books</span>
       </p>
-      <div className="grid grid-cols-1 gap-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-8">
+      <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-8">
         {books?.map((book) => (
           <Book key={book._id} info={book} />
         ))}
