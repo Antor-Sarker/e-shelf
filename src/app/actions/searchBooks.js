@@ -1,7 +1,5 @@
 "use server";
 
-import dynamic from "next/dynamic";
-
 export async function searchBooks(param) {
   try {
     const res = await fetch(`http://localhost:3000/api/books?title=${param}`,{
