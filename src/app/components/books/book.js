@@ -2,9 +2,8 @@ import Image from "next/image";
 
 export default function Book({ info }) {
   const { _id, title, cover, price, author, inStock } = info;
-
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col transform transition duration-300 hover:scale-105 w-full">
+    <div className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col transform transition duration-300 hover:scale-105 w-full cursor-pointer">
       <div className="relative w-96 sm:w-full lg:w-full xl:w-full 2xl:w-full h-72">
         <Image
           src={cover}

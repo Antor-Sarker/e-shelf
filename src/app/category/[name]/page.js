@@ -1,4 +1,5 @@
 import Book from "@/app/components/books/book";
+import Link from "next/link";
 
 export default async function Books({ params }) {
   const { name } = await params;
@@ -13,7 +14,9 @@ export default async function Books({ params }) {
       </p>
       <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-8">
         {books?.map((book) => (
-          <Book key={book._id} info={book} />
+          <Link key={book._id} href={`/${book?._id}`}>
+            <Book info={book} />
+          </Link>
         ))}
       </div>
     </div>

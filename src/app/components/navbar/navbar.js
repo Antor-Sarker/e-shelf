@@ -1,5 +1,5 @@
 "use client";
-// import { searchBooks } from "@/app/actions/searchBooks";
+import { searchBooks } from "@/app/actions/searchBooks";
 import {
   Bars3Icon,
   MagnifyingGlassIcon,
@@ -7,16 +7,16 @@ import {
   UserIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import Result from "../search/result";
 
 export default function Navbar() {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
 
   const [onFocus, setOnFocus] = useState(false);
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
   const [debounceInput, setDebounceInput] = useState("");
   const [searchResult, setSearchResult] = useState([]);
 
@@ -107,7 +107,9 @@ export default function Navbar() {
                 <Link
                   href="/category"
                   className={`hover:text-green-600 underline-offset-8 decoration-4 decoration-green-400 ${
-                    pathName.split('/')[1] === "category" ? "text-green-600 underline" : ""
+                    pathName.split("/")[1] === "category"
+                      ? "text-green-600 underline"
+                      : ""
                   }`}
                 >
                   Categories
@@ -118,7 +120,9 @@ export default function Navbar() {
                 <Link
                   href="/author"
                   className={`hover:text-green-600 underline-offset-8 decoration-4 decoration-green-400 ${
-                    pathName.split('/')[1] === "author" ? "text-green-600 underline" : ""
+                    pathName.split("/")[1] === "author"
+                      ? "text-green-600 underline"
+                      : ""
                   }`}
                 >
                   Authors
@@ -129,7 +133,7 @@ export default function Navbar() {
                 <Link
                   href="/publications"
                   className={`hover:text-green-600 underline-offset-8 decoration-4 decoration-green-400 ${
-                    pathName.split('/')[1] === "publications"
+                    pathName.split("/")[1] === "publications"
                       ? "text-green-600 underline"
                       : ""
                   }`}
@@ -187,7 +191,7 @@ export default function Navbar() {
 
             <div
               className={`${
-                pathName.split('/')[1] === "category"
+                pathName.split("/")[1] === "category"
                   ? "bg-green-400 text-emerald-50"
                   : "not-only-of-type:"
               } text-bold rounded my-2 px-1`}
@@ -199,7 +203,7 @@ export default function Navbar() {
 
             <div
               className={`${
-                pathName.split('/')[1] === "author"
+                pathName.split("/")[1] === "author"
                   ? "bg-green-400 text-emerald-50"
                   : "not-only-of-type:"
               } text-bold  rounded my-2 px-1`}
@@ -211,7 +215,7 @@ export default function Navbar() {
 
             <div
               className={`${
-                pathName.split('/')[1] === "publications"
+                pathName.split("/")[1] === "publications"
                   ? "bg-green-400 text-emerald-50"
                   : "not-only-of-type:"
               } text-bold  rounded my-2 px-1`}
@@ -242,28 +246,11 @@ export default function Navbar() {
                 onClick={() => setInput("")}
               />
             </div>
-            {searchResult?.map((book) => {
-              return (
-                <div
-                  key={book._id}
-                  className="flex border border-gray-300 rounded p-1 mb-2 cursor-pointer"
-                >
-                  <div className="mr-2 w-1/6">
-                    <Image
-                      src={book.cover}
-                      alt="cover"
-                      width={250}
-                      height={300}
-                      className="h-auto"
-                    />
-                  </div>
-                  <div className="my-3">
-                    <p className="text-blue-950">{book?.title}</p>
-                    <p className="text-amber-950">{book?.author}</p>
-                  </div>
-                </div>
-              );
-            })}
+            {searchResult?.map((book) => (
+              <Link key={book._id} href={`/${book?._id}`}>
+                <Result info={book} />
+              </Link>
+            ))}
           </div>
         )}
       </nav>
