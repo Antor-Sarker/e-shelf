@@ -247,7 +247,11 @@ export default function Navbar() {
               />
             </div>
             {searchResult?.map((book) => (
-              <Link key={book._id} href={`/${book?._id}`}>
+              <Link
+                key={book._id}
+                href={`/${book?._id}`}
+                onClick={() => setInput("")}
+              >
                 <Result info={book} />
               </Link>
             ))}
