@@ -1,13 +1,42 @@
+"use client";
 import {
   HeartIcon as HeartSolid,
   ShoppingCartIcon,
 } from "@heroicons/react/24/outline";
 import Image from "next/image";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { detailsBook } from "../actions/detailsBook";
 
-export default async function details({ params }) {
-  const { id } = await params;
-  const res = await fetch(`http://localhost:3000/api/books/${id}`);
-  const book = await res.json();
+export default function Details() {
+  const [book, setBook] = useState({});
+  const params = useParams();
+  const id = params?.id;
+
+  useEffect(() => {
+    (async function () {
+      const data = await detailsBook(id);
+      setBook(data);
+
+      if (!localStorage.getItem("recentlyViewed")) {
+        localStorage.setItem(
+          "recentlyViewed",
+          JSON.stringify([{ bookId: data?._id, bookCover: data?.cover }])
+        );
+      } else {
+        const localData = JSON.parse(localStorage.getItem("recentlyViewed"));
+        const withoutExistedData = localData.filter(
+          (item) => item.bookId != data._id
+        );
+        const newData = [
+          ...withoutExistedData,
+
+          { bookId: data?._id, bookCover: data?.cover },
+        ];
+        localStorage.setItem("recentlyViewed", JSON.stringify(newData));
+      }
+    })();
+  }, [id]);
 
   const {
     _id,
@@ -21,7 +50,7 @@ export default async function details({ params }) {
     details,
     review,
     wishList,
-  } = await book;
+  } = book;
 
   return (
     <div className="max-w-4xl mx-auto px-6 py-10">
@@ -29,10 +58,10 @@ export default async function details({ params }) {
         {/* Image */}
         <div>
           <Image
-            src={cover}
+            src={book?.cover}
             width={400}
             height={600}
-            alt={title}
+            alt={book?.title}
             className="rounded-xl shadow-lg w-full object-cover"
           />
         </div>

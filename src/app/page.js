@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { fetchBooks } from "./actions/fetchBooks";
 import Book from "./components/books/book";
+import RecentlyViewed from "./components/history/recentlyViewed";
 
 export default function Home() {
   const [data, setData] = useState([]);
@@ -67,6 +68,9 @@ export default function Home() {
           >{`>`}</button>
         )}
       </div>
+
+        {/* History */}
+      <RecentlyViewed/>
     </div>
   );
 }
