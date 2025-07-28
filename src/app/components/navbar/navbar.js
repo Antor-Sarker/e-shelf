@@ -1,5 +1,6 @@
 "use client";
 import { searchBooks } from "@/app/actions/searchBooks";
+import { useCart } from "@/app/context/cart/cartContext";
 import {
   Bars3Icon,
   MagnifyingGlassIcon,
@@ -12,7 +13,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import Result from "../search/result";
 
-export default function Navbar() {
+export default function Navbar({ children }) {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
 
   const [onFocus, setOnFocus] = useState(false);
@@ -21,6 +22,7 @@ export default function Navbar() {
   const [searchResult, setSearchResult] = useState([]);
 
   const pathName = usePathname();
+  const { cartData } = useCart();
 
   //debouncing for search books
   useEffect(() => {
@@ -145,12 +147,18 @@ export default function Navbar() {
           </div>
 
           <div className="flex">
-            <div className="relative flex mx-2 border py-1 px-2 rounded border-gray-300">
-              <ShoppingCartIcon className="size-5 text-gray-950" />
-              <div className="bg-green-500 text-white rounded-full px-1.5 absolute -top-3.5 -right-0 text-sm">
-                0
+            <Link href="/cart">
+              <div className="relative flex mx-2 border py-1 px-2 rounded border-gray-300">
+                <ShoppingCartIcon className="size-5 text-gray-950" />
+                <div
+                  className={`bg-red-500 text-white rounded-full px-1.5 absolute -top-3.5 -right-0 text-sm ${
+                    cartData?.length === 0 && "hidden"
+                  }`}
+                >
+                  {cartData?.length}
+                </div>
               </div>
-            </div>
+            </Link>
             <div className="mx-2 border py-1 px-2 rounded-xl border-gray-300 bg-green-400">
               <UserIcon className="text-white size-5" />
             </div>
@@ -258,6 +266,7 @@ export default function Navbar() {
           </div>
         )}
       </nav>
+      {children}
     </>
   );
 }

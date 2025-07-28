@@ -4,20 +4,26 @@ import {
   ShoppingCartIcon,
 } from "@heroicons/react/24/outline";
 import Image from "next/image";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { detailsBook } from "../actions/detailsBook";
+import { useCart } from "../context/cart/cartContext";
 
 export default function Details() {
   const [book, setBook] = useState({});
+  const [isExist, setIsExist] = useState(false);
+
   const params = useParams();
   const id = params?.id;
+  const router = useRouter();
+  const { cartData, setCartData } = useCart();
 
   useEffect(() => {
     (async function () {
-      const data = await detailsBook(id);
+      const data = await detailsBook(params.id);
       setBook(data);
 
+      //Recently view on footer
       if (!localStorage.getItem("recentlyViewed")) {
         localStorage.setItem(
           "recentlyViewed",
@@ -35,8 +41,13 @@ export default function Details() {
         ];
         localStorage.setItem("recentlyViewed", JSON.stringify(newData));
       }
+
+      //check for cart existing data
+      if (cartData?.some((item) => item.id === book?._id)) {
+        setIsExist(true);
+      }
     })();
-  }, [id]);
+  }, [book?._id, cartData, params.id]);
 
   const {
     _id,
@@ -51,6 +62,49 @@ export default function Details() {
     review,
     wishList,
   } = book;
+
+  function handelAddtoCart() {
+    //navigate Cart Page
+    if (isExist) {
+      router.push("/cart");
+    } else {
+      if (localStorage.getItem("cartData")) {
+        const existingData = JSON.parse(localStorage.getItem("cartData"));
+
+        // if item not exist
+        if (!existingData?.some((item) => item.id === _id)) {
+          const data = {
+            id: _id,
+            title,
+            cover,
+            price,
+            quantity: 1,
+            totalPrice: price,
+            isSelected: true,
+          };
+          const newData = [...existingData, data];
+
+          //update cart
+          localStorage.setItem("cartData", JSON.stringify(newData));
+          setCartData(newData);
+        }
+      } else {
+        const data = {
+          id: _id,
+          title,
+          cover,
+          price,
+          quantity: 1,
+          totalPrice: price,
+          isSelected: true,
+        };
+
+        //insert to localStorage
+        localStorage.setItem("cartData", JSON.stringify([data]));
+        setCartData([data]);
+      }
+    }
+  }
 
   return (
     <div className="max-w-4xl mx-auto px-6 py-10">
@@ -74,9 +128,16 @@ export default function Details() {
           <p className="text-blue-900 text-base">copies avilable: {inStock}</p>
           <p className="text-gray-800">{details}</p>
           <div className="flex space-x-4 mt-6">
-            <button className="flex items-center gap-2 text-white bg-green-600 hover:bg-green-800 px-5 py-2 rounded-lg shadow cursor-pointer">
+            <button
+              className={`flex items-center gap-2 text-white ${
+                isExist === true
+                  ? "bg-red-500 hover:bg-red-700"
+                  : "bg-green-500 hover:bg-green-700"
+              } px-7 py-2 rounded-lg shadow cursor-pointer`}
+              onClick={handelAddtoCart}
+            >
               <ShoppingCartIcon className="w-5 h-5" />
-              Add to Cart
+              {isExist ? "Go to Cart" : "Add to Cart"}
             </button>
             <button className="flex items-center hover:text-red-600 cursor-pointer">
               <HeartSolid className="w-8 h-8 text-red-500" />
