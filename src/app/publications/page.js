@@ -1,20 +1,27 @@
 import Filter from "../components/filter/filter";
 
 export default async function Publications() {
-  const res = await fetch(`http://localhost:3000/api/books/publication`, {
-    cache: "force-cache",
-  });
-  if (!res.ok) {
-    const err = await res.text();
-    console.error("API error:", err);
-    return;
-  }
-  const data = await res.json();
+  try {
+    const res = await fetch(`${process.env.BASE_URL}/api/books/publication`, {
+      cache: "force-cache",
+      next: { revalidate: 300 },
+    });
 
-  return (
-    <div className="">
-      <h1 className="text-xl p-3 text-green-700"># All Publications</h1>
-      <Filter data={data} page={"publications"} />
-    </div>
-  );
+    if (!res.ok) {
+      const err = await res.text();
+      console.error("API error:", err);
+      return;
+    }
+    const data = await res.json();
+
+    return (
+      <div className="">
+        <h1 className="text-xl p-3 text-green-700"># All Publications</h1>
+        <Filter data={data} page={"publications"} />
+      </div>
+    );
+  } catch (error) {
+    console.log(error);
+    return <div>Error!</div>
+  }
 }

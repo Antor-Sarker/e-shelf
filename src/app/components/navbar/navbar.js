@@ -9,7 +9,7 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Result from "../search/result";
 
@@ -23,6 +23,7 @@ export default function Navbar({ children }) {
 
   const pathName = usePathname();
   const { cartData } = useCart();
+  const router = useRouter();
 
   //debouncing for search books
   useEffect(() => {
@@ -41,6 +42,12 @@ export default function Navbar({ children }) {
       setSearchResult(result);
     })();
   }, [debounceInput]);
+
+  function handelDetails(link) {
+    setInput("");
+    setIsOpenMenu(false);
+    router.push(link);
+  }
 
   return (
     <>
@@ -255,13 +262,11 @@ export default function Navbar({ children }) {
               />
             </div>
             {searchResult?.map((book) => (
-              <Link
-                key={book._id}
-                href={`/${book?._id}`}
-                onClick={() => setInput("")}
-              >
-                <Result info={book} />
-              </Link>
+              <Result
+                key={book?._id}
+                info={book}
+                handelDetails={handelDetails}
+              />
             ))}
           </div>
         )}

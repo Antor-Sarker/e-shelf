@@ -2,6 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function Filter({ data, page }) {
+
+  //set col for responsive design
   const col =
     page === "category"
       ? "grid-cols-2"
@@ -50,7 +52,7 @@ export default function Filter({ data, page }) {
               key={item?._id}
               className="bg-[#edf7f1] shawow shadow-black shadow-md rounded cursor-pointer h-11/12 mx-3"
             >
-              <Link href={`http://localhost:3000/${page}/${item?.name}`}>
+              <Link href={`/${page}/${item?.name}`}>
                 <div className={`overflow-hidden w-full h-9/12`}>
                   <Image
                     src={item?.photo}

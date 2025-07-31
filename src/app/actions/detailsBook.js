@@ -2,9 +2,11 @@
 
 export async function detailsBook(id) {
   try {
-    const res = await fetch(`http://localhost:3000/api/books/${id}`,{
-      cache: "no-store"
+    const res = await fetch(`${process.env.BASE_URL}/api/books/${id}`, {
+      cache: "force-cache",
+      next: { revalidate: 300 },
     });
+
     if (!res.ok) {
       const err = await res.text();
       console.error("API error:", err);

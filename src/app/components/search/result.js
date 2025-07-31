@@ -1,9 +1,12 @@
 import Image from "next/image";
 
-export default function Result({ info }) {
+export default function Result({ info, handelDetails }) {
   const { _id, title, cover, author } = info;
   return (
-    <div className="flex border border-gray-300 rounded p-1 mb-2 cursor-pointer">
+    <div
+      className="flex border border-gray-300 rounded p-1 mb-2 cursor-pointer"
+      onClick={() => handelDetails(`/${_id}`)}
+    >
       <div className="mr-2 w-1/6">
         <Image
           src={cover}
