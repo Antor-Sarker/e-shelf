@@ -46,7 +46,7 @@ export default function Home() {
           (item, index) => {
             return (
               <button
-                key={crypto.randomUUID()}
+                key={index}
                 className={`*:shadow mx-1 px-4 rounded shadow text-red-400 cursor-pointer hover:bg-red-400 hover:text-white ${
                   page === index + 1 && "text-white bg-red-400"
                 }`}

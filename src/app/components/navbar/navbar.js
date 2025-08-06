@@ -1,6 +1,8 @@
 "use client";
+import logOut from "@/app/actions/auth/logout";
 import { searchBooks } from "@/app/actions/searchBooks";
 import { useCart } from "@/app/context/cart/cartContext";
+import { useUser } from "@/app/context/user/userContext";
 import {
   Bars3Icon,
   MagnifyingGlassIcon,
@@ -15,6 +17,7 @@ import Result from "../search/result";
 
 export default function Navbar({ children }) {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
+  const [isOpenLogOut, setIsOpenLogOut] = useState(false);
 
   const [onFocus, setOnFocus] = useState(false);
   const [input, setInput] = useState("");
@@ -23,6 +26,7 @@ export default function Navbar({ children }) {
 
   const pathName = usePathname();
   const { cartData } = useCart();
+  const { userId, setUserId } = useUser();
   const router = useRouter();
 
   //debouncing for search books
@@ -47,6 +51,25 @@ export default function Navbar({ children }) {
     setInput("");
     setIsOpenMenu(false);
     router.push(link);
+  }
+
+  function handelDashboard(userIcon) {
+    if (userIcon) {
+      //for mobile screen
+      if (window.innerWidth < 426 && userId) {
+        setIsOpenLogOut((prev)=>!prev);
+      }
+      //for big screen
+      else router.push("/dashboard");
+    } else {
+      setIsOpenLogOut((prev)=>!prev);
+      router.push("/dashboard");
+    }
+  }
+
+  function handelLogOut() {
+    setUserId(null);
+    logOut();
   }
 
   return (
@@ -153,7 +176,7 @@ export default function Navbar({ children }) {
             </div>
           </div>
 
-          <div className="flex">
+          <div className="flex relative">
             <Link href="/cart">
               <div className="relative flex mx-2 border py-1 px-2 rounded border-gray-300">
                 <ShoppingCartIcon className="size-5 text-gray-950" />
@@ -166,8 +189,33 @@ export default function Navbar({ children }) {
                 </div>
               </div>
             </Link>
-            <div className="mx-2 border py-1 px-2 rounded-xl border-gray-300 bg-green-400">
+            <div
+              className="group relative mx-2 border py-1 px-2 rounded-xl border-gray-300 bg-green-400 cursor-pointer"
+              onClick={() => handelDashboard(true)}
+            >
               <UserIcon className="text-white size-5" />
+
+              {userId && (
+                <div
+                  className={`absolute ${
+                    isOpenLogOut ? "visible" : "invisible"
+                  } group-hover:visible bg-emerald-400 top-12 -right-3 rounded px-5 py-4 shadow-2xl text-gray-100 space-y-4 font-medium transition-all duration-300`}
+                >
+                  <div className="hover:text-blue-800">
+                    <button
+                      className="cursor-pointer"
+                      onClick={() => handelDashboard(false)}
+                    >
+                      Dashboard
+                    </button>
+                  </div>
+                  <div className="hover:text-blue-800">
+                    <button className="cursor-pointer" onClick={handelLogOut}>
+                      Logout
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
