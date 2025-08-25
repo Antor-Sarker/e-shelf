@@ -13,7 +13,7 @@ export default async function checkUser() {
     });
 
     const data = await res.json();
-    return data?.userId;
+    return data;
   } catch (error) {
     return null;
   }

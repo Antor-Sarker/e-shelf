@@ -63,6 +63,8 @@ export default function Navbar({ children }) {
       else router.push("/dashboard");
     } else {
       setIsOpenLogOut((prev)=>!prev);
+      setIsOpenLogOut((prev)=>!prev);
+
       router.push("/dashboard");
     }
   }

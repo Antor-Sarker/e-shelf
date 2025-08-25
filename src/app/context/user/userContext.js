@@ -10,7 +10,7 @@ export function UserProvider({ children }) {
   useEffect(() => {
     (async function () {
       const data = await checkUser();
-      setUserId(data);
+      setUserId(data?.userId);
     })();
   }, []);
 
