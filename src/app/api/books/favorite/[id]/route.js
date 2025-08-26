@@ -1,25 +1,27 @@
 import { ObjectId } from "mongodb";
-import clientPromise from "../../../../../lib/mongodb";
+import clientPromise from "../../../../../../lib/mongodb";
 
-export async function GET(request, { params }) {
+export async function PATCH(request, { params }) {
   try {
     const searchParams = await request.nextUrl.searchParams;
-    const userId = await searchParams?.get("userId");
     const { id: bookId } = await params;
+    const userId = await searchParams.get("userId");
+    const { isFavorite } = await request.json();
+
     const client = await clientPromise;
-    const db = await client.db(process.env.BOOKS_DB);
-    const book = await db
+    const userDB = await client.db(process.env.USERS_DB);
+    const usersData = await userDB.collection("users");
+    const booksDB = await client.db(process.env.BOOKS_DB);
+    const book = await booksDB
       .collection("products")
       .findOne({ _id: new ObjectId(bookId) });
 
-    if (userId) {
-      const userDB = await client.db(process.env.USERS_DB);
-      const user = await userDB
-        .collection("users")
-        .findOne({ _id: new ObjectId(userId) });
-      const isExist = await user?.wishListBooksId?.includes(bookId);
-
-      if (isExist) {
+    if (isFavorite === true) {
+      const result = await usersData?.updateOne(
+        { _id: new ObjectId(userId) },
+        { $push: { wishListBooksId: bookId } }
+      );
+      if (result.acknowledged) {
         return new Response(
           JSON.stringify({
             ...book,
@@ -30,7 +32,14 @@ export async function GET(request, { params }) {
             headers: { "Content-Type": "application/json" },
           }
         );
-      } else {
+      }
+    } else {
+      const result = await usersData.updateOne(
+        { _id: new ObjectId(userId) },
+        { $pull: { wishListBooksId: bookId } }
+      );
+
+      if (result.acknowledged) {
         return new Response(
           JSON.stringify({
             ...book,
@@ -42,17 +51,6 @@ export async function GET(request, { params }) {
           }
         );
       }
-    } else {
-      return new Response(
-        JSON.stringify({
-          ...book,
-          isFavorite: false,
-        }),
-        {
-          status: 200,
-          headers: { "Content-Type": "application/json" },
-        }
-      );
     }
   } catch (error) {
     return new Response(JSON.stringify({ error: "failed to fetch book" }), {

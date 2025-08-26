@@ -37,19 +37,19 @@ export default function Dashboard() {
 
       <div className="flex justify-center mt-3">
         <div
-          className="bg-sky-200 m-2 p-3 rounded flex space-x-2 hover:bg-sky-300 cursor-pointer"
+          className="bg-sky-200 m-2 p-3 rounded flex space-x-2 hover:bg-sky-300 cursor-pointer transition-transform hover:scale-105 duration-150"
           onClick={() => router.push("/dashboard/orders")}
         >
           <CircleStackIcon className="size-6 px-0.5" />
-          Order 1
+          Order {userDetails?.orderCount}
         </div>
         <div
-          className="bg-green-200 m-2 p-3 rounded flex space-x-2 hover:bg-green-300 cursor-pointer"
+          className="bg-green-200 m-2 p-3 rounded flex space-x-2 hover:bg-green-300 cursor-pointer transition-transform hover:scale-105 duration-150"
           onClick={() => router.push("/dashboard/favorites")}
         >
           {" "}
           <HeartIcon className="size-6 px-0.5" />
-          wish List 2
+          wish List {userDetails?.favouriteCount}
         </div>
       </div>
     </div>

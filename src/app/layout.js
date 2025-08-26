@@ -1,4 +1,5 @@
 import { Geist, Geist_Mono } from "next/font/google";
+import { Bounce, ToastContainer } from "react-toastify";
 import Navbar from "./components/navbar/navbar";
 import { CartProvider } from "./context/cart/cartContext";
 import { UserProvider } from "./context/user/userContext";
@@ -29,6 +30,19 @@ export default function RootLayout({ children }) {
           <CartProvider>
             <Navbar>
               <div className="absolute z-0 top-16 w-full">{children}</div>
+              <ToastContainer
+                position="top-center"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick={false}
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="colored"
+                transition={Bounce}
+              />
             </Navbar>
           </CartProvider>
         </UserProvider>

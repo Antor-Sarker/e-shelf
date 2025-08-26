@@ -65,15 +65,18 @@ export default function RecentlyViewed() {
             >
               {books?.map((book) => {
                 return (
-                  <Image
-                    key={book.bookId}
-                    src={book?.bookCover}
-                    width={280}
-                    height={300}
-                    alt="book-cover"
-                    className="rounded-xl px-2 cursor-pointer"
-                    onClick={() => router.push(`/${book?.bookId}`)}
-                  />
+                  <div key={book?.bookId}>
+                    {book?.bookCover && (
+                      <Image
+                        src={book?.bookCover || null}
+                        width={280}
+                        height={300}
+                        alt="book-cover"
+                        className="rounded-xl px-2 cursor-pointer"
+                        onClick={() => router.push(`/${book?.bookId}`)}
+                      />
+                    )}
+                  </div>
                 );
               })}
             </div>

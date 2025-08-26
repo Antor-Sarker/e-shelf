@@ -3,7 +3,7 @@ import clientPromise from "../../../../../lib/mongodb";
 
 export async function GET(request) {
   const searchParams = await request.nextUrl.searchParams;
-  const userId = await searchParams.get("id");
+  const userId = await searchParams?.get("id");
 
   try {
     const client = await clientPromise;
