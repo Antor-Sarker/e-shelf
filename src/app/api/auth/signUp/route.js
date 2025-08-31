@@ -21,7 +21,6 @@ export async function POST(request) {
 
   const existedEmail = await collection.findOne({ email });
   if (existedEmail) {
-    console.log(userInfo);
     return NextResponse.json({ error: "already exist" }, { status: 409 });
   } else {
     const result = await collection.insertOne(userInfo);

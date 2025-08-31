@@ -2,11 +2,18 @@
 import { TrashIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { Empty } from "../components/cart/empty";
 import { useCart } from "../context/cart/cartContext";
-import { Empty } from "./empty";
+import { useUser } from "../context/user/userContext";
+import { Bounce, toast } from "react-toastify";
+import { useState } from "react";
+import CheckOut from "../components/order/checkOut";
+import { placeOrder } from "../actions/dashboard/order/placeOrder";
 
 export default function Cart() {
+  const [isOpenModal,setIsOpenModal] = useState(false)
   const { cartData, setCartData } = useCart();
+  const {userId} = useUser()
   const router = useRouter();
 
   // count total selected
@@ -66,8 +73,77 @@ export default function Cart() {
     localStorage.setItem("cartData", JSON.stringify(updatedData));
   }
 
+  function handelCheckOut(){
+    if(userId){
+      setIsOpenModal(true)
+    }
+    else{
+      toast.error("Login required", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
+      router.push("/auth/login")
+    }
+  }
+
+  async function handelPlaceOrder(userInfo){
+    const orderBooks=await cartData.filter(item=>item.isSelected===true)
+    
+    if(orderBooks?.length===0){
+      toast.error("please select minimum one book", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
+      setIsOpenModal(false)
+    }
+    else{
+      const orderData = {
+        userId,
+      books: orderBooks,client:{
+        ...userInfo
+      }, orderTime: new Date(),status:"pending"
+    }
+
+    const res = await placeOrder(orderData)
+      
+      if(res){
+        setIsOpenModal(false)
+        setCartData([])
+        localStorage.removeItem("cartData")
+        router.push('/dashboard/orders')
+
+        toast.success("Order placed successfully!", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          transition: Bounce,
+        });
+      }
+    }
+  }
+
   return (
     <div>
+      {isOpenModal && <CheckOut setIsOpenModal={setIsOpenModal} handelPlaceOrder={handelPlaceOrder}/>}
       {cartData?.length ? (
         <div className="w-screen h-screen bg-[#f1f2f4] grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-12 xl:grid-cols-12 2xl:grid-cols-12 p-5">
           <div className="col-span-9 px-5 space-y-3 mt-5">
@@ -162,7 +238,7 @@ export default function Cart() {
                 <div>{subTotal + (selectedCount === 0 ? 0 : 50)} Tk.</div>
               </div>
               <div className=" bottom-0 p-2 text-center rounded w-full text-white">
-                <button className="bg-green-400 hover:bg-green-500 w-full p-3 rounded cursor-pointer font-bold">
+                <button className="bg-green-400 hover:bg-green-500 w-full p-3 rounded cursor-pointer font-bold" onClick={handelCheckOut}>
                   Proceed to order
                 </button>
               </div>
