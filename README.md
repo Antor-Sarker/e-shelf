@@ -1,36 +1,89 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+# 📚 E-Shelf
 
-First, run the development server:
+E-Shelf is a **Fullstack Online Bookshop** built with **Next.js, MongoDB, and Tailwind CSS**.  
+It provides a seamless book shopping experience with search, filtering, authentication, wishlist, and order management.  
 
+## Live Demo: [https://e-shelf-w1za.vercel.app/](https://e-shelf-w1za.vercel.app/)
+
+
+## ✨ Features
+
+- 📖 **Display Books** – Browse a wide collection of books on the homepage.  
+- 🔍 **Search** – Find books quickly by typing the book name.  
+- 📑 **Pagination** – Navigate through books page by page.  
+- 🗂️ **Filters** – Easily filter by **category, authors, and publications**.  
+- 📘 **Book Details** – View detailed information about each book.  
+- 🕒 **Recently Viewed** – Keep track of your recently viewed books.  
+- 🛒 **Cart** – Add books to your cart for easy checkout.  
+- 🔐 **Secure Authentication** – Login system using **JWT tokens (HttpOnly cookies)**.  
+- ❤️ **Favorites** – Save books to your favorite list.  
+- 🛍️ **Place Orders** – Checkout and confirm your order.  
+- 👤 **User Dashboard** – Personalized dashboard for users.  
+- 💖 **Wishlist Management** – Add and manage your wishlist items.  
+- 📦 **Order Details** – View past order information.  
+- 📄 **Download Invoice** – Download your order details as a **PDF file**.  
+
+---
+
+## 🛠️ Tech Stack
+
+- **Frontend**: [Next.js](https://nextjs.org/) (App Router)  
+- **Backend**: Next.js API Routes  
+- **Database**: [MongoDB](https://www.mongodb.com/)  
+- **Authentication**: JWT (HttpOnly cookies)  
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)  
+- **PDF Generation**: Server-side PDF export  
+
+---
+
+## 🚀 Getting Started
+
+### 1. Clone the Repository
 ```bash
-npm run dev
+git clone https://github.com/Antor-Sarker/e-shelf.git
+cd e-shelf
+```
+---
+
+### 2. Install Dependencies
+```bash
+npm install
 # or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+yarn install
+```
+---
+
+
+### 3. Configure Environment Variables
+
+Create a .env file in the root and add:
+```bash
+DB_USER=your_database_name
+DB_PASS=your_database_password
+BOOKS_DB=your_database_for_books
+USERS_DB=your_database_for_users_db
+ORDERS_DB=your_database_orders_db
+JWT_SECRET=your_jwt_secret
+BASE_URL=http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 4. Run the Development Server
+```bash
+npm run dev
+```
+The app will run at: http://localhost:3000
+---
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+🤝 Contributing
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Contributions are welcome! Please open an issue or submit a pull request for improvements.
 
-## Learn More
+📜 License
 
-To learn more about Next.js, take a look at the following resources:
+This project is licensed under the MIT License.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+👨‍💻 Author
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Developed by Antor Sarker
+🔗 GitHub: [Antor-Sarker](https://github.com/Antor-Sarker)
