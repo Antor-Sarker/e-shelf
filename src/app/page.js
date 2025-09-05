@@ -7,12 +7,14 @@ import RecentlyViewed from "./components/history/recentlyViewed";
 export default function Home() {
   const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
+  const [cartData, setCartData] = useState(null);
 
   useEffect(() => {
     (async function () {
       const res = await fetchBooks(page);
       setData(res);
     })();
+    setCartData(JSON.parse(localStorage.getItem("cartData")));
   }, [page]);
 
   function handelPage(type) {
@@ -29,7 +31,7 @@ export default function Home() {
       {/* books */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-8 gap-7">
         {data?.books?.map((book) => (
-          <Book key={book?._id} info={book} />
+          <Book key={book?._id} info={book} cartData={cartData} />
         ))}
       </div>
 

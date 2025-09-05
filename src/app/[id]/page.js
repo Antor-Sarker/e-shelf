@@ -22,25 +22,6 @@ export default function Details() {
       const data = await detailsBook(params.id, "get");
       setBook(data);
 
-      //Recently view on footer
-      if (!localStorage.getItem("recentlyViewed")) {
-        localStorage.setItem(
-          "recentlyViewed",
-          JSON.stringify([{ bookId: data?._id, bookCover: data?.cover }])
-        );
-      } else {
-        const localData = JSON.parse(localStorage.getItem("recentlyViewed"));
-        const withoutExistedData = localData.filter(
-          (item) => item.bookId != data?._id
-        );
-        const newData = [
-          ...withoutExistedData,
-
-          { bookId: data?._id, bookCover: data?.cover },
-        ];
-        localStorage.setItem("recentlyViewed", JSON.stringify(newData));
-      }
-
       //check for cart existing data
       if (cartData?.some((item) => item.id === book?._id)) {
         setIsExist(true);

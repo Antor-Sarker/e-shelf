@@ -2,15 +2,23 @@
 import { useCart } from "@/app/context/cart/cartContext";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { Bounce, toast } from "react-toastify";
 
-export default function Book({ info }) {
+export default function Book({ info, cartData }) {
+  const [isAddedTocart, setIsAddedToCart] = useState(false);
   const { _id, title, cover, price, author, inStock } = info;
   const router = useRouter();
   const { setCartData } = useCart();
 
+  useEffect(() => {
+    setIsAddedToCart(cartData?.some((item) => item.id === info._id));
+  }, [cartData, info._id]);
+
   function handelDetails() {
     router.push(`/${_id}`);
   }
+
   function handelAddtoCart(e) {
     e.stopPropagation();
 
@@ -33,6 +41,7 @@ export default function Book({ info }) {
         //update cart
         localStorage.setItem("cartData", JSON.stringify(newData));
         setCartData(newData);
+        setIsAddedToCart(true);
       }
     } else {
       const data = {
@@ -49,6 +58,20 @@ export default function Book({ info }) {
       localStorage.setItem("cartData", JSON.stringify([data]));
       setCartData([data]);
     }
+    setIsAddedToCart(true);
+
+    // success message
+    toast.success("Added to Cart", {
+      position: "top-center",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      transition: Bounce,
+    });
   }
 
   return (
@@ -76,10 +99,15 @@ export default function Book({ info }) {
         <p className="text-base font-bold text-[#05966e] mt-2">৳ {price}</p>
 
         <button
-          className="mt-auto w-full bg-[#059669] text-white py-2 rounded-lg hover:bg-[#2e6554] transition duration-200"
+          disabled={isAddedTocart}
+          className={`mt-auto w-full ${
+            isAddedTocart
+              ? "bg-gray-300 cursor-not-allowed"
+              : "bg-[#059669] hover:bg-[#2e6554]"
+          }  text-white py-2 rounded-lg transition duration-200`}
           onClick={(e) => handelAddtoCart(e)}
         >
-          Add to Cart
+          {isAddedTocart ? "Added" : "Add to Cart"}
         </button>
       </div>
     </div>
