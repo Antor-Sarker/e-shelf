@@ -53,29 +53,30 @@ export default function Book({ info }) {
 
   return (
     <div
-      className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col transform transition duration-300 hover:scale-105 w-full cursor-pointer"
+      className="bg-white rounded-xl shadow-md overflow-hidden flex flex-col transform transition duration-300 hover:shadow-lg hover:scale-[1.02] w-full sm:max-w-sm md:max-w-md lg:max-w-sm mx-auto cursor-pointer"
       onClick={handelDetails}
     >
-      <div className="relative w-96 sm:w-full lg:w-full xl:w-full 2xl:w-full h-72">
+      {/* Image Section */}
+      <div className="relative w-full h-52">
         <Image
           src={cover}
           alt={title}
-          layout="fill"
-          objectFit="cover"
-          className="border-b border-gray-200"
+          fill
+          className="object-cover border-b border-gray-200"
         />
       </div>
 
-      <div className="p-4 flex flex-col flex-grow text-center">
-        <h3 className="text-sm font-semibold text-emerald-900 mb-2">{title}</h3>
-        <h4 className="text-sm text-blue-950">by {author}</h4>
+      {/* Content Section */}
+      <div className="p-3 flex flex-col flex-grow text-center">
+        <h3 className="text-base font-semibold text-emerald-900 line-clamp-1 mb-1">
+          {title}
+        </h3>
+        <h4 className="text-sm text-blue-950 line-clamp-1">by {author}</h4>
 
-        <div>
-          <p className="text-sm font-bold text-[#05966e] mb-4">৳ {price}</p>
-        </div>
+        <p className="text-base font-bold text-[#05966e] mt-2">৳ {price}</p>
 
         <button
-          className="mt-auto bg-[#059669] text-white py-1 px-4 rounded-md hover:bg-[#2e6554] transition duration-200 cursor-pointer"
+          className="mt-auto w-full bg-[#059669] text-white py-2 rounded-lg hover:bg-[#2e6554] transition duration-200"
           onClick={(e) => handelAddtoCart(e)}
         >
           Add to Cart
