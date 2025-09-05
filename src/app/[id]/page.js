@@ -48,23 +48,23 @@ export default function Details() {
     })();
   }, [book?._id, cartData, params?.id]);
 
-  function handelAddtoCart() {
-    //navigate Cart Page
+  //navigate Cart Page
+  function handelAddtoCart(id) {
     if (isExist) {
       router.push("/cart");
     } else {
-      if (localStorage.getItem("cartData")) {
+      if (JSON.parse(localStorage.getItem("cartData"))) {
         const existingData = JSON.parse(localStorage.getItem("cartData"));
 
         // if item not exist
-        if (!existingData?.some((item) => item.id === _id)) {
+        if (!existingData?.some((item) => item.id === id)) {
           const data = {
-            id: _id,
-            title,
-            cover,
-            price,
+            id,
+            title: book?.title,
+            cover: book?.cover,
+            price: book?.price,
             quantity: 1,
-            totalPrice: price,
+            totalPrice: book?.price,
             isSelected: true,
           };
           const newData = [...existingData, data];
@@ -158,7 +158,7 @@ export default function Details() {
                   ? "bg-red-500 hover:bg-red-700"
                   : "bg-green-500 hover:bg-green-700"
               } px-7 py-2 rounded-lg shadow cursor-pointer`}
-              onClick={() => handelAddtoCart}
+              onClick={() => handelAddtoCart(book?._id)}
             >
               <ShoppingCartIcon className="w-5 h-5 animate-bounce hover:animate-none" />
               {isExist ? "Go to Cart" : "Add to Cart"}
