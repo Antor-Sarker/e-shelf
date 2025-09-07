@@ -22,7 +22,7 @@ export default function RecentlyViewed() {
 
       if (coverRef.current) {
         coverRef.current.scrollTo({
-          left: coverRef.current.scrollWidth,
+          right: coverRef.current.scrollWidth,
           behavior: "smooth",
         });
       }
@@ -43,49 +43,56 @@ export default function RecentlyViewed() {
   }
 
   return (
-    <div className="">
-      <h2 className="text-center text-blue-900">
-        Recently Viewed: {books?.length ? books?.length : "0"}
+    <div className="w-full bg-gray-50 py-6 mt-6 rounded-t-2xl shadow-inner">
+      <h2 className="text-center text-blue-900 font-semibold text-lg mb-4">
+        Recently Viewed ({books?.length || 0})
       </h2>
 
-      <div className="mx-3 mb-16 flex justify-center">
-        {!books ? (
-          <ArchiveBoxXMarkIcon className="text-red-500 w-6 h-6 mt-2" />
+      <div className="relative max-w-6xl mx-auto px-4">
+        {!books?.length ? (
+          <div className="flex flex-col items-center text-gray-500 py-6">
+            <ArchiveBoxXMarkIcon className="text-red-500 w-10 h-10 mb-2" />
+            <p className="text-sm">No recently viewed books</p>
+          </div>
         ) : (
-          <div className="flex justify-center w-12/12 sm:w-6/12 md:w-6/12 lg:w-6/12 xl:w-6/12 2xl:w-6/12 h-auto">
+          <div className="relative">
+            {/* Scroll buttons */}
             <button
               onClick={() => handelScroll("prev")}
-              className="px-6 cursor-pointer hover:text-red-500"
+              className="absolute left-0 top-1/2 -translate-y-1/2 bg-gray-300 hover:bg-red-500 shadow-md rounded-full p-2 z-10 animate-pulse hover:animate-none"
             >
-              <ChevronLeftIcon className="w-6 h-6" />
+              <ChevronLeftIcon className="w-6 h-6 text-gray-700" />
             </button>
+
             <div
               ref={coverRef}
-              className="flex overflow-x-auto scroll-smooth gap-x-3 p-3 scrollbar-hide"
+              className="flex overflow-x-auto scroll-smooth gap-3 p-2 scrollbar-hide"
             >
-              {books?.map((book) => {
-                return (
-                  <div key={book?.bookId}>
-                    {book?.bookCover && (
-                      <Image
-                        src={book?.bookCover || null}
-                        width={280}
-                        height={300}
-                        alt="book-cover"
-                        className="rounded-xl px-2 cursor-pointer"
-                        onClick={() => router.push(`/${book?.bookId}`)}
-                      />
-                    )}
-                  </div>
-                );
-              })}
+              {books.map((book) => (
+                <div
+                  key={book?._id}
+                  className="flex-shrink-0 w-28 sm:w-32 md:w-40 lg:w-48"
+                >
+                  {book?.cover && (
+                    <Image
+                      src={book?.cover}
+                      width={200}
+                      height={280}
+                      alt="book-cover"
+                      className="rounded-xl shadow-md cursor-pointer object-cover transition-transform duration-200 hover:scale-105"
+                      onClick={() => router.push(`/${book?._id}`)}
+                    />
+                  )}
+                </div>
+              ))}
             </div>
+
             <button
               onClick={() => handelScroll("next")}
-              className="px-6 cursor-pointer hover:text-red-500"
+              className="absolute right-0 top-1/2 -translate-y-1/2 bg-gray-300 hover:bg-red-500 shadow-md rounded-full p-2 z-10 animate-pulse hover:animate-none"
             >
-              <ChevronRightIcon className="w-6 h-6" />
-            </button>{" "}
+              <ChevronRightIcon className="w-6 h-6 text-gray-700" />
+            </button>
           </div>
         )}
       </div>

@@ -16,9 +16,32 @@ export default function Book({ info, cartData }) {
   }, [cartData, info._id]);
 
   function handelDetails() {
+    //store history at local storage
+    const recentlyViewed = JSON.parse(localStorage.getItem("recentlyViewed"));
+    //store head for already exist data
+    if (recentlyViewed) {
+      if (recentlyViewed.some((item) => item._id)) {
+        const updatedHistory = recentlyViewed.filter(
+          (item) => item._id !== _id
+        );
+        localStorage.setItem(
+          "recentlyViewed",
+          JSON.stringify([{ _id, cover }, ...updatedHistory])
+        );
+      } else {
+        localStorage.setItem(
+          "recentlyViewed",
+          JSON.stringify([{ _id, cover }, ...recentlyViewed])
+        );
+      }
+    } else {
+      localStorage.setItem("recentlyViewed", JSON.stringify([{ _id, cover }]));
+    }
+    // navigate details page
     router.push(`/${_id}`);
   }
 
+  // add to cart with local storage
   function handelAddtoCart(e) {
     e.stopPropagation();
 
